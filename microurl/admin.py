@@ -1,3 +1,4 @@
 from django.contrib import admin
+from microurl.models import MicroUrl
 
-# Register your models here.
+admin.site.register(MicroUrl)
