@@ -1,7 +1,12 @@
 from django.shortcuts import render
+from microurl.forms import URLform
 
-# Create your views here.
 
+def home(request):  # home page
 
-def home(request):
-    return render(request, "microurl/index.html")
+    if request.method == "POST":
+        form = URLform(request.POST)
+    else:
+        form = URLform()
+
+    return render(request, "microurl/index.html", {"form": form})
