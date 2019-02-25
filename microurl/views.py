@@ -19,7 +19,7 @@ def home(request):  # home page
     shorturl = ''
     latesturlid = int
     if MicroUrl.objects.all():
-        latesturlid = MicroUrl.objects.latest('shorturl').id + 1
+        latesturlid = MicroUrl.objects.latest('shorturl').id + 100000000
     else:
         latesturlid = 1
     if request.method == "POST":
