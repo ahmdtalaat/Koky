@@ -1,10 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from microurl.forms import URLform
 from microurl.models import MicroUrl
 
 
-def home(request):  # home page
-    def encode(id):
+def home(request):
+    def encode(id):  # encoding function
         # base 62 characters
         characters = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
         base = len(characters)
@@ -16,27 +16,27 @@ def home(request):  # home page
             id = id // base
         # since ret has reversed order of base62 id, reverse ret before return it
         return "".join(ret[::-1])
-    shorturl = ''
-    latesturlid = int
-    if MicroUrl.objects.all():
+    shorturl, shortenurl, latesturlid = '', '', int
+    if MicroUrl.objects.all():  # if any urls in db.
         latesturlid = MicroUrl.objects.latest('shorturl').id + 100000000
     else:
         latesturlid = 1
-    if request.method == "POST":
+    if request.method == "POST":  # checking the request
         form = URLform(request.POST)
         if form.is_valid():
             url = form.cleaned_data['longurl']
             if MicroUrl.objects.filter(longurl=url):
+                #  if it's been converted before
                 shorturl = MicroUrl.objects.get(longurl=url).shorturl
             else:
                 obj = MicroUrl()
                 obj.longurl = form.cleaned_data['longurl']
                 obj.shorturl = encode(latesturlid)
-                obj.save()
+                obj.save()  # submit to database
                 shorturl = MicroUrl.objects.get(longurl=url).shorturl
+            shortenurl = f'http://bla.co/{shorturl}'
     else:
         form = URLform()
-    shortenurl = f'http://bla.co/{shorturl}'
     context = {
         'shorturl': shortenurl,
         'form': form

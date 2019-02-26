@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'microurl.apps.MicrourlConfig'
+    'microurl.apps.MicrourlConfig',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
